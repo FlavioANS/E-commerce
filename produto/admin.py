@@ -7,7 +7,7 @@ class VariacaoInline(admin.TabularInline):
 
 
 class ProdutoAdmin(admin.ModelAdmin):
-    inline = [
+    inlines = [
         VariacaoInline
     ]
 
