@@ -7,20 +7,21 @@ from django.conf import settings
 from PIL import Image
 import os
 
+
 class Produto(models.Model):
     nome = models.CharField(max_length=255)
     descricao_curta = models.TextField(max_length=255)
     descricao_longa = models.TextField()
     imagem = models.ImageField(
-        upload_to = 'produto_imagens/%Y/%m/', blank=True, null=True)
-    slug = models.SlugField(unique= True)
+        upload_to='produto_imagens/%Y/%m/', blank=True, null=True)
+    slug = models.SlugField(unique=True)
     preco_marketing = models.FloatField()
     preco_marketing_promocional = models.FloatField(default=0)
     tipo = models.CharField(
         default='V',
         max_length=1,
         choices=(
-            ('V', 'Variaçao'),
+            ('V', 'Variavel'),
             ('S', 'Simples'),
         )
     )
@@ -30,12 +31,12 @@ class Produto(models.Model):
         img_full_path = os.path.join(settings.MEDIA_ROOT, img.name)
         img_pil = Image.open(img_full_path)
         original_width, original_height = img_pil.size
-        
+
         if original_width <= new_width:
             print('retornando, largura original menor que nova largura')
             img_pil.close()
             return
-        
+
         new_height = round((new_width * original_height) / original_width)
         new_img = img_pil.resize((new_width, new_height), Image.LANCZOS)
         new_img.save(
@@ -63,9 +64,9 @@ class Variacao(models.Model):
     preco_promocional = models.FloatField(default=0)
     estoque = models.PositiveBigIntegerField(default=1)
 
-    def __str__(self): 
+    def __str__(self):
         return self.nome or self.produto
 
-    class meta:
-       verbose_name = 'Variação'
-       verbose_name_pural = 'Variações'
+    #class Meta:
+    #    verbose_name = 'Variação'
+    #    verbose_name_pural = 'Variações'
